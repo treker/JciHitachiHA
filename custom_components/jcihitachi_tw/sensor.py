@@ -31,6 +31,7 @@ async def _async_setup(hass, async_add):
                 [JciHitachiPowerConsumptionSensorEntity(thing, coordinator),
                  JciHitachiMonthlyPowerConsumptionSensorEntity(thing, coordinator),
                  JciHitachiMonthIndicatorSensorEntity(thing, coordinator),
+                 JciHitachiModeSensorEntity(thing, coordinator),
                  ],
                 update_before_add=True)
         elif thing.type == "DH":
@@ -295,3 +296,40 @@ class JciHitachiIndoorTemperatureSensorEntity(JciHitachiEntity, SensorEntity):
     @property
     def unique_id(self):
         return f"{self._thing.gateway_mac_address}_indoor_temperature_sensor"
+    
+class JciHitachiModeSensorEntity(JciHitachiEntity, SensorEntity):
+    def __init__(self, thing, coordinator):
+        super().__init__(thing, coordinator)
+
+    @property
+    def name(self):
+        """Return the name of the entity."""
+        return f"{self._thing.name} Mode"
+
+    @property
+    def native_value(self):
+        """Return the current mode of the device."""
+        status = self.hass.data[DOMAIN][UPDATED_DATA].get(self._thing.name, None)
+        if status:
+            return status.mode if hasattr(status, "mode") else None
+        return None
+
+    @property
+    def device_class(self):
+        """Return the device class."""
+        return None  # Mode doesn't have a standard device class in Home Assistant
+
+    @property
+    def native_unit_of_measurement(self):
+        """Return the unit of measurement."""
+        return None  # Mode doesn't have a unit of measurement
+
+    @property
+    def unique_id(self):
+        """Return a unique ID for the sensor."""
+        return f"{self._thing.gateway_mac_address}_mode"
+
+    @property
+    def state_class(self):
+        """Return the state class."""
+        return None  # State class is not relevant for modes
