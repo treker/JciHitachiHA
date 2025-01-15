@@ -74,9 +74,7 @@ class JciHitachiIndoorHumiditySensorEntity(JciHitachiEntity, SensorEntity):
         """Return the indoor humidity."""
         status = self.hass.data[DOMAIN][UPDATED_DATA].get(self._thing.name, None)
         if status:
-            if status.power == "off":
-                return HVACMode.OFF
-            return status.mode if hasattr(status, "mode") else None
+            return None if status.indoor_humidity == "unsupported" else status.indoor_humidity
         return None
 
     @property
