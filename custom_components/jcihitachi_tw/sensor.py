@@ -311,6 +311,8 @@ class JciHitachiModeSensorEntity(JciHitachiEntity, SensorEntity):
         """Return the current mode of the device."""
         status = self.hass.data[DOMAIN][UPDATED_DATA].get(self._thing.name, None)
         if status:
+            if status.power == "off":
+                return HVACMode.OFF
             return status.mode if hasattr(status, "mode") else None
         return None
 
