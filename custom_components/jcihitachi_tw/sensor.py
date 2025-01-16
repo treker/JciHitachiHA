@@ -6,6 +6,7 @@ from homeassistant.components.sensor import (SensorStateClass,
                                              SensorDeviceClass, SensorEntity)
 from homeassistant.const import (CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
                                  PERCENTAGE, UnitOfEnergy, UnitOfTemperature)
+from homeassistant.components.climate.const import (HVACMode)
 
 from . import API, COORDINATOR, DOMAIN, UPDATED_DATA, JciHitachiEntity
 
